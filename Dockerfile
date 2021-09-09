@@ -4,7 +4,7 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y curl apt-transport-https ca-certificates gnupg lsb-release systemctl build-essential git
+RUN apt install -y curl apt-transport-https ca-certificates gnupg lsb-release
 
 # Docker
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
