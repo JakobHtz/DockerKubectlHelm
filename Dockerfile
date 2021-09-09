@@ -24,18 +24,21 @@ RUN apt install -y docker-ce docker-ce-cli containerd.io kubectl helm
 
 # Configure Docker Registry
 # mkdir /etc/docker/
-# echo '{"insecure-registries" : ["your.repo"]}' > /etc/docker/daemon.json
+# echo '{"insecure-registries" : ["<repo-url>"]}' > /etc/docker/daemon.json
+
+# Add this to the daemon.json when having problems with mounting aufs
+# echo '{"storage-driver": "vfs"}' > /etc/docker/daemon.json
 
 # Configure Kubernetes Cluster
-# kubectl config set-cluster k8s --server="your-cluster"
-# kubectl config set clusters.k8s.certificate-authority-data ""
-# kubectl config set-credentials gitlab --token=""
-# kubectl config set-context gitlab-runner --cluster=k8s --user=gitlab --namespace=ym-autocomplete
-# kubectl config use-context gitlab-runner
+# kubectl config set-cluster <cluster-name> --server="your-cluster"
+# kubectl config set clusters.<cluster-name>.certificate-authority-data "<cert-data>"
+# kubectl config set-credentials <user-name> --token = "<user-token>"
+# kubectl config set-context <context-name> --cluster=k8s --user=<user-name> --namespace=<your-namespace>
+# kubectl config use-context <context-name>
 
 # Start Docker
 # service docker start
-# docker login your-repo -u name -p pass 
+# docker login <repo-url> -u <name> -p <password>
 
 # Test K8s/Helm/Docker
 # kubectl get Pods
@@ -43,4 +46,4 @@ RUN apt install -y docker-ce docker-ce-cli containerd.io kubectl helm
 # docker run hello-world
 
 # Use Image
-# docker run --privileged -it this-image
+# docker run --privileged -it <this-image>
