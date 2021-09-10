@@ -2,6 +2,6 @@
 
 Docker image based on Ubuntu with Docker, Kubectl and Helm preinstalled.
 
-> Build image using _docker build -t image-tag ._
+> Build image using *docker build -t \<image-tag\> .*
 
-> Run image using _docker run --privileged -it image-tag_
+> Run image using *docker run --privileged -it \<image-tag>*
