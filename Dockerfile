@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM debian:bookworm-slim
 
 # Set Up
 ENV DEBIAN_FRONTEND noninteractive
@@ -7,8 +7,8 @@ RUN apt upgrade -y
 RUN apt install -y curl apt-transport-https ca-certificates gnupg lsb-release
 
 # Docker
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bullseye stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Kubernetes
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
@@ -29,10 +29,14 @@ RUN apt install -y docker-ce docker-ce-cli containerd.io kubectl helm
 # Add this to the daemon.json when having problems with mounting aufs
 # echo '{"storage-driver": "vfs"}' > /etc/docker/daemon.json
 
+# Set iptables to legacy
+RUN update-alternatives --set iptables /usr/sbin/iptables-legacy
+RUN update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+
 # Configure Kubernetes Cluster
-# kubectl config set-cluster <cluster-name> --server="your-cluster"
-# kubectl config set clusters.<cluster-name>.certificate-authority-data "<cert-data>"
-# kubectl config set-credentials <user-name> --token = "<user-token>"
+# kubectl config set-cluster <cluster-name> --server=<your-cluster>
+# kubectl config set clusters.<cluster-name>.certificate-authority-data <cert-data>
+# kubectl config set-credentials <user-name> --token="<user-token>"
 # kubectl config set-context <context-name> --cluster=k8s --user=<user-name> --namespace=<your-namespace>
 # kubectl config use-context <context-name>
 
